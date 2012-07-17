@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head >
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>returns combination of numbers with sum = 10</title>
+	</head>
+	<script type="text/javascript">
+		var data = [1,2,3,4,3,5,6,7,8,9,10];
+		checkData = (function checkData(data){
+			var time = new Date();
+			data = data.sort(function(a,b){return parseInt(b)-parseInt(a)});
+			data = eliminateDuplicates(data, true);
+			var res = [];
+			var match,sep,ind,parr;
+			for(var i = 0; i < data.length; i++){
+				var el = data[i]*1;
+				if(el == 10){
+					res.push(el);
+				}else if((el !== 0) && (el < 10)){
+					ind = [i], sep =[el],  match = [], parr = [];
+					match = findEq(sep, ind, parr);
+					if(match.length > 0) {
+						if(match.length > 1){
+							for(var _k = 0; _k < match.length; _k++){
+								res.push(match[_k]);
+							}
+						}else res.push(match);
+					}
+				}
+			}
+
+
+			
+			res = eliminateDuplicates(res);
+
+			console.log('finished in: ' +(new Date() - time) + ' seconds.');
+			console.log(res.length + ' results found');
+			console.dir(res);
+
+		})(data);
+
+
+		function findEq(sep, ind, parr){
+			var sum = 0;
+			var tmp;
+			var sl = sep.length;
+			var tmp1 = sep;
+			for(var _k = 0; _k < sl; _k++){
+				sum += sep[_k];
+			}
+			for(var _k = 0; _k < sl; _k++){
+				for(var _i = 0; _i < data.length-1; _i++){
+					tmp = true;
+					for(var z = 0; z < sl; z++){
+						if(_i == ind[z]){
+							tmp = false;
+						}
+					}
+					if(tmp){
+						if(_i != ind[_k] && (data[_i] > 0) && (data[_i] < 10)){
+							if(sum + data[_i] == 10){
+								tmp1 = sep.slice(0);
+								tmp1.push(data[_i]);							
+								parr.push(tmp1);
+							}else if(sum + data[_i] < 10){
+								tmp1 = sep.slice(0);
+								tmp1.push(data[_i]);
+								ind.push(_i);
+								parr = findEq(tmp1, ind, parr);
+							}
+						}
+					}
+				}
+			}
+			return parr;
+		}
+		function eliminateDuplicates(arr, num) {
+			var i,
+				len=arr.length,
+				out=[],
+				obj={};
+
+			for (i=0;i<len;i++) {
+				obj[arr[i]]=0;
+			}
+			for (i in obj) {
+				if(num) out.push(parseInt(i));
+				else out.push(i);
+			}
+			return out;
+		}
+	</script>
+	<body>
+	</body>
+</html>
