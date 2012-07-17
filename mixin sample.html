@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head >
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>mixin sample</title>
+	</head>
+	<script type="text/javascript">
+				Function.prototype.curry = function() {
+				  var fn = this;
+				  var args = [].slice.call(arguments, 0);
+				  return function() {
+				    return fn.apply(this, args.concat([].slice.call(arguments, 0)));
+				  };
+				}
+
+				var asButton = function() {
+				  this.hover = function(bool) {
+				    bool ? mylib.appendClass('hover') : mylib.removeClass('hover');
+				  };
+				  this.press = function(bool) {
+				    bool ? mylib.appendClass('pressed') : mylib.removeClass('pressed');
+				  };
+				  this.fire = function() {
+				    return this.action();
+				  };
+				  return this;
+				};
+
+				var asRectangle = (function() {
+				  function area() {
+				    return this.length * this.width;
+				  }
+				  function grow(growBy) {
+				    this.length += growBy, this.width +=growBy;
+				  }
+				  function shrink(shrinkBy) {
+				    this.length -= shrinkBy, this.width -= shrinkBy;
+				  }
+				  return function(options) {
+				    this.area = area;
+				    this.grow = grow.curry(options['growBy']);
+				    this.shrink = shrink.curry(options['shrinkBy']);
+				    return this;
+				  };
+				})();
+
+				var RectangularButton = function(length, width, label, action) {
+				  this.length = length;
+				  this.width = width;
+				  this.label = label;
+				  this.action = action;
+				}
+
+				asButton.call(RectangularButton.prototype);
+				asRectangle.call(RectangularButton.prototype, {growBy: 2, shrinkBy: 2});
+
+				var button4 = new RectangularButton(2, 1, 'add', function() {return console.log('added')});
+				button4.area(); //2
+				button4.grow();
+				button4.area(); //12
+				button4.fire(); //'added'
+	</script>
+	<body>
+		<style type="text/css">
+			pre{
+				background: #fff;
+				border: 1px #000 solid;
+				border-radius: 5px;
+				padding: 10px;
+				text-align: left;
+			}
+			.wrapper{
+				width:1000px;
+				margin:0 auto;
+				padding:20px;
+				background:#ccc;
+				border-radius: 5px;
+			}
+		</style>
+		<div class="wrapper">
+			<p>mixin sample from <a href="http://habrahabr.ru/post/147901/">habrahabr</a></p>
+			<p>look to the console</p>
+			<pre>
+				Function.prototype.curry = function() {
+				  var fn = this;
+				  var args = [].slice.call(arguments, 0);
+				  return function() {
+				    return fn.apply(this, args.concat([].slice.call(arguments, 0)));
+				  };
+				}
+			</pre>
+			<pre>
+				var asButton = function() {
+				  this.hover = function(bool) {
+				    bool ? mylib.appendClass('hover') : mylib.removeClass('hover');
+				  };
+				  this.press = function(bool) {
+				    bool ? mylib.appendClass('pressed') : mylib.removeClass('pressed');
+				  };
+				  this.fire = function() {
+				    return this.action();
+				  };
+				  return this;
+				};
+
+				var asRectangle = (function() {
+				  function area() {
+				    return this.length * this.width;
+				  }
+				  function grow(growBy) {
+				    this.length += growBy, this.width +=growBy;
+				  }
+				  function shrink(shrinkBy) {
+				    this.length -= shrinkBy, this.width -= shrinkBy;
+				  }
+				  return function(options) {
+				    this.area = area;
+				    this.grow = grow.curry(options['growBy']);
+				    this.shrink = shrink.curry(options['shrinkBy']);
+				    return this;
+				  };
+				})();
+
+				var RectangularButton = function(length, width, label, action) {
+				  this.length = length;
+				  this.width = width;
+				  this.label = label;
+				  this.action = action;
+				}
+
+				asButton.call(RectangularButton.prototype);
+				asRectangle.call(RectangularButton.prototype, {growBy: 2, shrinkBy: 2});
+
+				var button4 = new RectangularButton(2, 1, 'add', function() {return console.log('added')});
+				button4.area(); //2
+				button4.grow();
+				button4.area(); //12
+				button4.fire(); //'added'
+			</pre>
+		</div>
+	</body>
+</html>
