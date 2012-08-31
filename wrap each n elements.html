@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+        <meta charset=utf-8 />
+        <title>wrap</title>
+    </head>
+
+    <body>
+        <style>
+            .wrap{
+                background:#f00;
+            }
+        </style>
+       <script>
+         $(document).ready(function(){
+              var el = $('div.item');
+              var n = 3; // how many to wrap
+              var old = 0;
+              for (var i = n; i <= el.length - 1; i+=n) {
+                  el.slice(old, i).wrapAll('<div class="wrap"/>');
+                  old = i;
+              };
+              el.slice(old, el.length).wrapAll('<div class="wrap"/>');
+         });      
+      </script>
+
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+      <div class="item">txt</div>
+    </body>
+</html>
