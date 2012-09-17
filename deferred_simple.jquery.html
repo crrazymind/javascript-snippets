@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <title>JavaScript Patterns</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script type="text/javascript">
+        $(document).ready(function(){
+
+            function sample1(){
+
+                var promise,promise2,promise3;
+
+                function run(func){
+                    var def = $.Deferred();
+                    func(def);
+                    return def.promise();
+                }
+                function anim(target){
+                    return function(def){
+                        $('div').animate(target, {queue:false, duration:600,complete:function(){
+                            def.resolve();
+                        }});
+                    }
+                } 
+                var promise = function(){
+                    return run(anim({marginLeft: 200}));
+                } 
+                var promise2 = function(){
+                    return run(anim({marginTop: 200}))
+                } 
+                var promise3 = function(){
+                    return run(anim({marginLeft: 400}))
+                }
+                var promise4 = function(){
+                    return run(anim({marginTop: 0}))
+                } 
+                var promise5 = function(){
+                    return run(anim({marginLeft: 200}))
+                }
+                promise().done(function(){
+                    promise2().done(function(){
+                        promise3().done(function(){
+                            promise4().done(function(){
+                                promise5();
+                            });
+                        })
+                    });
+                });
+
+            }
+            sample1();
+        });
+        </script>
+        <div style="width:20px; height:20px; background:#f00; position:relative;"></div>
+    </body>
+</html>
