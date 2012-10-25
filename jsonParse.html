@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset=utf-8 />
+<title>JS Bin</title>
+</head>
+<body>
+   <script>
+    var mas = ["propertyType.name", "builtYear", "price", "propertyType.someShit.shit1"];
+    var obj = {
+    "propertyType": {
+      "propertyTypeId": 1,
+      "name": "Villa",
+      "someShit":{
+        "shit1" : "ololo1",
+        "shit2" : "ololo2",
+      }
+    },
+    "price": 6500000,
+    "netto": 29633,
+    "brutto": 35968,
+    "address1": "Strindbergsvej 1",
+    "placeName": "                                                            ",
+    "builtYear": 1915,
+    "propertySizeAdvertized": 178,
+    "totalNumberOfRooms": 6,
+    "spotText": "",
+    "hasOpenHouseCurrently": false,
+    "openHouseDisplayText": "",
+    "salesMethod": "G",
+    "brokerChain": "DanBolig"
+}
+        
+        for (var i in obj['propertyType']){
+          console.log('i: '+ i +' obj["propertyType"][i]: ' + obj['propertyType'][i]);
+        }
+     
+     
+       console.log('____');
+       console.log(obj['propertyType.name']);
+       console.log(obj['propertyType'].name);
+       console.log(obj.propertyType.name);
+     
+     for( var _i = 0; _i<= mas.length-1; _i++){
+       if(mas[_i].split('.').length > -1){
+         var mas2 = mas[_i].split('.');
+         var tmp = obj;
+         for(var _n=0; _n<= mas2.length-1; _n++){
+           if(mas2[_n]){
+             tmp = tmp[mas2[_n]];
+           }
+         }
+         console.log(tmp);
+       }else{
+         console.log('from mas: ', obj[mas[_i]]);
+       }
+       
+     }
+     
+    for(var i = 0; i < mas.length; i++){
+		console.log((new Function('return obj.' + mas[i])()))
+	}
+       
+</script> 
+</body>
+
+</html>
